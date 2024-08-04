@@ -3,5 +3,5 @@
  Paper：https://cvpr.thecvf.com/virtual/2024/poster/31122
 # Overview
 <p align="left">
-<img src="JointSQ.png" width="1080"><br/>
- Figure 1. Deep Gradient Compression (DGC) can reduce the communication bandwidth (transmit less gradients by pruning away small gradients), improve the scalability, and speed up distributed training.<br/><br/>
+<img src="JointSQ.png" width="700"><br/>
+ Figure 1. Existing Co-compression methods and our JointSQ framework. Existing Co-compression methods typically apply sparsification and quantization step by step. Our framework considers sparsification as 0-bit quantization and thus the two-stage process is transformed into a unified learning framework.<br/><br/>
