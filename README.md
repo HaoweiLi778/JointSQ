@@ -31,7 +31,7 @@ In the models file, I have provided supported models that can be directly access
  # Custom compression method
  The framework proposed in this paper is highly flexible; in fact, it can be integrated as a hybrid quantization method into any distributed architecture. Furthermore, its scope of application can be customized; for instance, it can be executed per layer or per iteration, allowing for flexible adaptation based on computational capabilities. Modifications can be made at [communication_hook/hooks_JointSQ.py](communication_hook/hooks_JointSQ.py).
 
-## Citation
+# Citation
 
 If you find this useful, please cite our work as:
 
@@ -44,3 +44,6 @@ If you find this useful, please cite our work as:
   year={2024}
 }
 ```
+# We are committed to...
+
+ The method proposed in this paper primarily compresses parameters in distributed training. Currently, we are focusing on compressing activation values to minimize GPU memory usage. Applying these two techniques to training large models holds great promise.
