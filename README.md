@@ -6,3 +6,6 @@
 <p align="left">
 <img src="JointSQ.png" width="700"><br/>
  Figure 1. Existing Co-compression methods and our JointSQ framework. Existing Co-compression methods typically apply sparsification and quantization step by step. Our framework considers sparsification as 0-bit quantization and thus the two-stage process is transformed into a unified learning framework.<br/><br/>
+
+ Specifically, JointSQ is first formulated as a mixed-bit precision quantization (i.e., 0-bit, 2-bit, 4-bit and 8-bit) with sparsification to 0-bit for end-to-end Co-compression only once. Notably, to ensure adaptive bit-width assignment in such joint optimization space, a Multiple-Choice Knapsack Problem (MCKP) is special designed per-layer and we have addressed this problem with the lowest computational cost.
+ 
