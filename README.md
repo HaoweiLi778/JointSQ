@@ -31,3 +31,16 @@ In the models file, I have provided supported models that can be directly access
  # Custom compression method
  The framework proposed in this paper is highly flexible; in fact, it can be integrated as a hybrid quantization method into any distributed architecture. Furthermore, its scope of application can be customized; for instance, it can be executed per layer or per iteration, allowing for flexible adaptation based on computational capabilities. Modifications can be made at [communication_hook/hooks_JointSQ.py](communication_hook/hooks_JointSQ.py).
 
+## Citation
+
+If you find this useful, please cite our work as:
+
+```
+@inproceedings{xie2024jointsq,
+  title={JointSQ: Joint Sparsification-Quantization for Distributed Learning},
+  author={Xie, Weiying and Li, Haowei and Ma, Jitao and Li, Yunsong and Lei, Jie and Liu, Donglai and Fang, Leyuan},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  pages={5778--5787},
+  year={2024}
+}
+```
