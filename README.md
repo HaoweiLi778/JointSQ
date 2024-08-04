@@ -25,6 +25,6 @@
 In the models file, I have provided supported models that can be directly accessed through the command line in main.py. Please note that I have not included SimpleViT in the models. If you wish to use SimpleViT or any other model, please modify the model definition on line 344 of main.py. 
   # Compression
   In the code, I have integrated compression into the communication hook (automatically called during backpropagation). I have replicated several distributed learning compression methods and encapsulated them into various hooks. To utilize different compression methods, please modify the main.py file.
-    ```python
+   ```python
    import communication_hook.hooks_JointSQ as myhooks
 ```
