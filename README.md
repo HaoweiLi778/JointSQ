@@ -30,6 +30,9 @@ Since PyTorch provides a built-in ViT model, if you wish to use ViT or customize
 ```
 The framework proposed in this paper is highly flexible; it can seamlessly integrate as a hybrid quantization method into any distributed architecture. In the code, I achieved full-process GPU acceleration through vectorized operations and sampling-based sorting methods, minimizing additional computation time. Settings for compression rate, sampling rate, and asynchronous communication can be configured in [communication_hook/hooks_JointSQ.py](communication_hook/hooks_JointSQ.py).
 
+# Speedup
+I simulated multi-node distributed training by launching multiple threads on a single GPU. The code for testing full-precision SGD and JointSQ acceleration can be found in [SpeedUp](SpeedUp). It is worth noting that, since PyTorch does not natively support 4-bit and 2-bit precision, I implemented mixed-precision quantization by bit-packing—combining four 2-bit values or two 4-bit values into a single 8-bit representation.
+
 # Citation
 
 If you find this useful, please cite our work as:
