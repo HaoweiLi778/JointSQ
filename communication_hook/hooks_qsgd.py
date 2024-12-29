@@ -69,9 +69,8 @@ class correlation_state(object):  # Equivalent to memory
         else:
             self.velocities[self.bucket_index: self.bucket_index + len(tensor)].add_(tensor)
 
-    def update(self, tensor: torch.Tensor, index):
-        self.velocities[self.bucket_index: self.bucket_index + len(tensor)]. \
-            index_fill_(0, index, 0)
+    def update(self, error: torch.Tensor):
+        self.velocities[self.bucket_index: self.bucket_index + len(error)] = error
 
     def get_mask(self,rank,base_grad: torch.Tensor, local_grad_list: list, bucket_index: int):
         
@@ -162,24 +161,23 @@ def correlation_gc_hook(state: correlation_state, bucket: dist.GradBucket
     # Transfer compressed gradient
     local_mask = state.mask[state.bucket_index: state.bucket_index + len(local_grad_memory)]
     local_index = local_mask.nonzero().view(-1)  # Non-zero index
-    index_list = _get_all_gather_list(local_mask, world_size)  # Create an empty buffer for all_gather
+    error = vec_this_bucket - local_mask
     '''all gather index'''
-    fut = dist.all_gather(index_list, local_mask, group=group_to_use, async_op=async_op).get_future()
+    fut = dist.all_reduce(local_mask, op=dist.ReduceOp.SUM, group=group_to_use, async_op=async_op).get_future()
     if blocked:
         dist.barrier()
 
     def decompressed(fut):
         if blocked:
             dist.barrier()
-        compressed_grad_list = fut.wait()[0]
-        grad = torch.zeros_like(local_grad_memory, dtype=local_grad_memory.dtype, device=local_grad_memory.device)
-        # gradient aggregation
-        for i in range(world_size):
-            grad1 = compressed_grad_list[i]
-            grad= grad + grad1
+        aggregated_grad = fut.wait()[0]  # Aggregated quantized gradient
 
+        # Average the aggregated gradient
+        aggregated_grad.div_(world_size)
+
+        # Copy the result to the target buffer
         decompressed_grad = bucket.buffer()
-        decompressed_grad.copy_(grad.div_(world_size))
+        decompressed_grad.copy_(aggregated_grad)
 
         if blocked:
             dist.barrier()
@@ -188,7 +186,7 @@ def correlation_gc_hook(state: correlation_state, bucket: dist.GradBucket
     a = fut.then(decompressed)
 
     # Update velocity/momentum
-    state.update(tensor, local_index)  # Note: Updating must be done after transmitting velocities; otherwise, the compressed_grad_list will be all zeros
+    state.update(error)
 
     state.bucket_index += len(local_grad_memory)
     if bucket.is_last():
@@ -211,4 +209,3 @@ class DDPCommHookType(Enum):
     All_Reduce = partial(_ddp_comm_hook_wrapper, comm_hook=default_all_reduce)
     Debug_All_Reduce = partial(_ddp_comm_hook_wrapper, comm_hook=debug_all_reduce)
     correlation_GC = partial(_correlation_comm_hook_wrapper, comm_hook=correlation_gc_hook)
-
