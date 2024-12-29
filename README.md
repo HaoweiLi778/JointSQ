@@ -48,4 +48,4 @@ If you find this useful, please cite our work as:
 ```
 # We are committed to...
 
- The method proposed in this paper primarily compresses parameters in distributed training. Currently, we are focusing on compressing activation values to minimize GPU memory usage. Applying these two techniques to training large models holds great promise.
+ I am highly interested in training and inference acceleration for large models. Recently, I have been exploring compressing activation values to minimize GPU memory usage. I would be delighted to connect and discuss with researchers who share similar interests. Feel free to reach out to me at 23011210779@stu.xidian.edu.cn.
