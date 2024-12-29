@@ -208,7 +208,7 @@ def run(rank, world_size, tensor_size=100000, n_gpus=4):
     setup(rank, world_size, n_gpus)
 
     device = torch.device(f"cuda:{rank % n_gpus}")
-    for i in range(1):
+    for i in range(10):
         tensor = torch.randn(tensor_size, device=device).reshape(-1)
         max_items = math.ceil(torch.abs(tensor).numel() * 32 * 0.001)
         mask1 = mckp_greedy(tensor, max_items)
