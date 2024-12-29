@@ -160,7 +160,6 @@ def correlation_gc_hook(state: correlation_state, bucket: dist.GradBucket
     state.get_mask(rank , local_grad_memory, bucket.gradients(), state.bucket_index)
     # Transfer compressed gradient
     local_mask = state.mask[state.bucket_index: state.bucket_index + len(local_grad_memory)]
-    local_index = local_mask.nonzero().view(-1)  # Non-zero index
     error = vec_this_bucket - local_mask
     '''all gather index'''
     fut = dist.all_reduce(local_mask, op=dist.ReduceOp.SUM, group=group_to_use, async_op=async_op).get_future()
