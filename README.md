@@ -22,14 +22,13 @@
    ```python
    python -m torch.distributed.run --nproc_per_node 4 --nnode 1 main.py --with_gc
 ```
-In the models file, I have provided supported models that can be directly accessed through the command line in main.py. Please note that I have not included SimpleViT in the models. If you wish to use SimpleViT or any other model, please modify the model definition on line 344 of main.py. 
+Since PyTorch provides a built-in ViT model, if you wish to use ViT or customize the model, please modify the model definition at line 344 of main.py.
   # Compression
   In the code, I have integrated compression into the communication hook (automatically called during backpropagation). I have replicated several distributed learning compression methods and encapsulated them into various hooks. To utilize different compression methods, please modify the main.py file.
    ```python
    import communication_hook.hooks_JointSQ as myhooks
 ```
- # Custom compression method
- The framework proposed in this paper is highly flexible; in fact, it can be integrated as a hybrid quantization method into any distributed architecture. Furthermore, its scope of application can be customized; for instance, it can be executed per layer or per iteration, allowing for flexible adaptation based on computational capabilities. Modifications can be made at [communication_hook/hooks_JointSQ.py](communication_hook/hooks_JointSQ.py).
+The framework proposed in this paper is highly flexible; it can seamlessly integrate as a hybrid quantization method into any distributed architecture. In the code, I achieved full-process GPU acceleration through vectorized operations and sampling-based sorting methods, minimizing additional computation time. Settings for compression rate, sampling rate, and asynchronous communication can be configured in [communication_hook/hooks_JointSQ.py](communication_hook/hooks_JointSQ.py).
 
 # Citation
 
